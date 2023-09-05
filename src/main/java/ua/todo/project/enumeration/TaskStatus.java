@@ -1,4 +1,4 @@
-package org.todo.project.enumeration;
+package ua.todo.project.enumeration;
 
 public enum TaskStatus {
     NEW("Новая!"),

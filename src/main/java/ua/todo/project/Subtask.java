@@ -1,4 +1,4 @@
-package org.todo.project;
+package ua.todo.project;
 
 public class Subtask extends Task {
     private Epic epic;

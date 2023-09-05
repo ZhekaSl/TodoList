@@ -1,10 +1,11 @@
-package org.todo.project;
+package ua.todo.project;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ToDoList {
     public static void main(String[] args) {
-        /*Task task = new Task("Топ", "аолво");
+        Task task = new Task("Топ", "аолво");
         Task task1 = new Task("То2п1", "аолво");
         Task task2 = new Task("То2п2", "аолво");
         Task task3 = new Task("То2п3", "аолво");
@@ -21,7 +22,7 @@ public class ToDoList {
         Subtask subtask4 = new Subtask("В кухне4", "полить цветы в кухне", epic1);
         Subtask subtask5 = new Subtask("В кухне5", "полить цветы в кухне", epic1);
 
-        TaskManager manager = new FileBackedTaskManager(Paths.get("C:\\Users\\zheny\\Desktop\\tasks.csv.txt"));
+        FileBackedTaskManager manager = new FileBackedTaskManager(Paths.get("C:\\Users\\zheny\\Desktop\\tasks.csv.txt"));
 
 
         manager.addTask(task1);
@@ -38,6 +39,7 @@ public class ToDoList {
         manager.addTask(task10);
         manager.addTask(subtask);
         manager.addTask(subtask4);
+        manager.addTask(subtask3);
 
 
         manager.getTask(3);
@@ -53,10 +55,19 @@ public class ToDoList {
         manager.getTask(13);
         manager.getTask(12);
         manager.getTask(11);
+        manager.getTask(2);
+        manager.getTask(2);
         manager.getTask(10);
         manager.getTask(9);
-        manager.getTask(2);
-        manager.getTask(2);
+
+        manager.addTask(new Task("fd111", "fdffff"));
+        manager.getTask(15);
+        manager.getTask(14);
+
+        manager.deleteTask(subtask.getId());
+
+
+        manager.printTasks();
         System.out.println("История просмотренных задач:");
 
 
@@ -64,19 +75,8 @@ public class ToDoList {
         for (Task t : manager.history()) {
             System.out.println((++i) + " ------------");
             System.out.println(t);
-        }*/
+        }
 
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(Paths.get("C:\\Users\\zheny\\Desktop\\fjkdsjf.csv"));
-        fileBackedTaskManager.printTasks();
-        fileBackedTaskManager.deleteTask(1);
-        fileBackedTaskManager.printTasks();
-        fileBackedTaskManager.addTask(new Task("popa", "fdf"));
-        fileBackedTaskManager.printTasks();
-        fileBackedTaskManager.addTask(new Task("fdfffff", "zhopa"));
-        fileBackedTaskManager.printTasks();
-        fileBackedTaskManager.addTask(new Task("fdffff333f", "zhop3a"));
-        System.out.println();
-        fileBackedTaskManager.printTasks();
 
 
 

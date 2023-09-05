@@ -1,15 +1,13 @@
-package org.todo.project;
+package ua.todo.project;
 
 
-
-import org.todo.project.enumeration.TaskStatus;
+import ua.todo.project.enumeration.TaskStatus;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Objects;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -32,11 +30,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    @Override
-    public Task getTask(int id) {
-        save();
-        return super.getTask(id);
-    }
 
     @Override
     public void update(Task task) {
@@ -44,24 +37,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
+
     @Override
     public void clear() {
         super.clear();
         save();
     }
 
+    public Path getSaveFile() {
+        return saveFile;
+    }
 
     public void save() {
         try (BufferedWriter writer = Files.newBufferedWriter(saveFile)) {
             writer.write("id,type,name,status,description,epic");
-
             writer.newLine();
             for (Task task : tasks.values()) {
                 writer.write(toString(task));
                 writer.newLine();
             }
-            writer.newLine();
-            writer.write(FileBackedHistoryManager.toString(historyManager));
         } catch (IOException e) {
             throw new RuntimeException("Что-то пошло не так при сохранении данных в файл!", e);
         }
@@ -69,7 +63,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(Path path) {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(path);
-        FileBackedHistoryManager historyManager = new FileBackedHistoryManager();
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             reader.readLine();
             String str;
@@ -77,15 +70,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Task task = fileBackedTaskManager.fromStringToTask(str);
                 fileBackedTaskManager.tasks.put(task.getId(), task);
             }
-            str = reader.readLine();
-            if (str != null) {
-                List<Integer> historyTasksId = FileBackedHistoryManager.fromStringToIds(str);
-                for (Integer id : historyTasksId) {
-                    historyManager.add(fileBackedTaskManager.getTask(id));
-                }
-                fileBackedTaskManager.historyManager = historyManager;
-            }
-
         } catch (IOException e) {
             System.out.println("Хэ");
         }
@@ -103,7 +87,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return stringBuilder.toString();
     }
 
-    private Task fromStringToTask(String value) {
+    public Task fromStringToTask(String value) {
         String[] values = value.split(",");
         int id = Integer.parseInt(values[0]);
         String taskType = values[1];

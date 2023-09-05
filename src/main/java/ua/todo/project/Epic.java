@@ -1,7 +1,7 @@
-package org.todo.project;
+package ua.todo.project;
 
 
-import org.todo.project.enumeration.TaskStatus;
+import ua.todo.project.enumeration.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +18,19 @@ public class Epic extends Task {
 
     public void addSubtask(Subtask subtask) {
         subtasks.add(subtask);
+        updateStatus();
     }
 
     public void removeSubtask(Subtask subtask) {
         subtasks.remove(subtask);
+        updateStatus();
     }
 
     public List<Subtask> getSubtasks() {
         return subtasks;
     }
 
-    public void update() {
+    public void updateStatus() {
         if (subtasks.isEmpty()) {
             taskStatus = TaskStatus.NEW;
         }
@@ -46,8 +48,6 @@ public class Epic extends Task {
         } else {
             taskStatus = TaskStatus.IN_PROGRESS;
         }
-
-
     }
 
     @Override

@@ -1,11 +1,12 @@
-package org.todo.project;
+package ua.todo.project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private static int id;
+    private int id;
     protected Map<Integer, Task> tasks;
     protected HistoryManager historyManager;
 
@@ -33,8 +34,20 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.put(task.getId(), task);
 
         if (task instanceof Subtask subtask) {
-            updateEpicStatus(subtask);
+            subtask.getEpic().updateStatus();
         }
+    }
+
+    public List<Task> getTasks() {
+        if (tasks != null)
+            return tasks.values().stream().toList();
+        else return new ArrayList<>();
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return null;
+        //TODO
     }
 
     @Override
@@ -62,11 +75,11 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task instanceof Subtask subtask) {
             subtask.getEpic().removeSubtask(subtask);
-            updateEpicStatus(subtask);
         }
+        historyManager.remove(id);
         tasks.remove(id);
-        InMemoryTaskManager.id--;
-        reindexTasksAfterDeleting(id);
+        this.id--;
+        reindexTasksAfterDeleting();
     }
 
     public void printSubtasksByEpic(Epic epic) {
@@ -82,7 +95,6 @@ public class InMemoryTaskManager implements TaskManager {
 
         if (task instanceof Subtask subtask) {
             subtask.getEpic().addSubtask(subtask);
-            updateEpicStatus(subtask);
         }
     }
 
@@ -91,12 +103,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-
-    private void updateEpicStatus(Subtask subtask) {
-        subtask.getEpic().update();
-    }
-
-    private void reindexTasksAfterDeleting(int deletedTaskId) {
+    private void reindexTasksAfterDeleting() {
         Map<Integer, Task> newMap = new HashMap<>();
         int index = 1;
         for (Task task : tasks.values()) {

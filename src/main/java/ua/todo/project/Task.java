@@ -1,13 +1,20 @@
-package org.todo.project;
+package ua.todo.project;
 
 
-import org.todo.project.enumeration.TaskStatus;
+import ua.todo.project.enumeration.TaskStatus;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Task {
     protected String name;
     protected String description;
     protected int id;
     protected TaskStatus taskStatus;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
     public Task(String name, String descr) {
         this.name = name;
@@ -47,10 +54,33 @@ public class Task {
         return taskStatus;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    private void setEndTime() {
+        if (startTime != null && duration != null)
+            endTime = startTime.plus(duration);
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     @Override
     public String toString() {
-
-
         return "Name: " + name + "\n" +
                 "Description: " + description + "\n" +
                 "ID: " + id + "\n" +

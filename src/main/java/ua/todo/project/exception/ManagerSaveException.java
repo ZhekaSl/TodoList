@@ -1,4 +1,4 @@
-package org.todo.project.exception;
+package ua.todo.project.exception;
 
 public class ManagerSaveException extends Exception{
     public ManagerSaveException(String message) {

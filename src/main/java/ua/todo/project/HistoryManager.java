@@ -1,4 +1,4 @@
-package org.todo.project;
+package ua.todo.project;
 
 import java.util.List;
 
